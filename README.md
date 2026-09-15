@@ -114,7 +114,7 @@ that actually covers the house, VLANs and firewalling, AdGuard DNS
 filtering, Nextcloud and Plex on hardware you own, Docker and
 Portainer with monitoring that tells you before the user does.
 
-**Proxmox · Docker · pfSense · AdGuard · Nextcloud**
+**Nextcloud · Plex · Docker · Portainer · AdGuard Home**
 
 <a href="https://vdbrinks.nl"><img src="https://img.shields.io/badge/free_network_test-8B5CF6?style=for-the-badge&labelColor=0D1117"></a>
 
