@@ -40,6 +40,19 @@ jobs:
           config_timezone: Europe/Amsterdam
           config_output: svg
 
+          # 960px instead of the default 480. The panel is full-width on the
+          # README, and at 480 native it either upscaled to ~1.65x (text twice
+          # the size of everything else) or sat native in a narrow column with
+          # empty space either side. At 960 it renders at ~0.82x in a ~790px
+          # column, the same scale as every other panel, and the extra width
+          # goes into the line length rather than the type size.
+          #
+          # The docs warn `large` "may not be supported by all templates".
+          # It IS supported by terminal - verified on a real run, see
+          # docs/09-changelog.md. Re-check the output dimensions if you ever
+          # change the template.
+          config_display: large
+
           # No isocalendar here. In run #2 it made this panel 480x823 - which
           # the README then upscaled to full width, so it towered over
           # everything and the prompt lines fell out of frame. It is also
