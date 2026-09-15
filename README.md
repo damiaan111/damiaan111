@@ -38,6 +38,9 @@
 <a href="https://website.vdbrinks.nl">
   <img alt="vdBrinks Web" src="https://img.shields.io/badge/%F0%9F%8C%90_WEB-website.vdbrinks.nl-0FA981?style=for-the-badge&labelColor=0D1117">
 </a>
+<!-- Contact address. This is a PERSONAL profile: no employer address, no
+     employer domain, nowhere on this page. Do not "helpfully" swap this
+     for a work mailbox. -->
 <a href="mailto:web@vdbrinks.nl">
   <img alt="Email" src="https://img.shields.io/badge/%E2%9C%89_CONTACT-email-64748B?style=for-the-badge&labelColor=0D1117">
 </a>
