@@ -28,9 +28,9 @@
     <text class="m" x="36" y="196" font-size="13.5" fill="#8fb3ad">top-down tactical battle royale</text>
     <g>
       <circle class="dot" cx="42" cy="252" r="4" fill="#00e5a0"/>
-      <text class="m" x="56" y="257" font-size="12" fill="#5d7a86">tacshot.nl — live</text>
+      <text class="m" x="56" y="257" font-size="12" fill="#5d7a86">tacshot.nl</text>
     </g>
-    <text class="m" x="606" y="257" font-size="11" fill="#33505c" text-anchor="end">capture pending</text>
+    <text class="m" x="606" y="257" font-size="11.5" fill="#00e5a0" text-anchor="end" opacity=".75">20 players · one life</text>
     <rect x="0" y="0" width="640" height="3" fill="url(#a)"/>
     <rect x=".5" y=".5" width="639" height="299" rx="14" fill="none" stroke="#1f3a42"/>
   </g>
