@@ -148,10 +148,17 @@ the domain when it ships.
      without this the page argues "two repositories" (docs/07-decisions.md,
      ADR-009).
 
-     Every label on it restates something this README already claims. Nothing
-     about the hardware is asserted that was not already public. If you want
-     the real specifics on there - link speeds, ZFS, IDS, VLAN names - add
-     them yourself: assets/homelab.svg is plain text. -->
+     DO NOT EDIT assets/homelab.svg BY HAND. It is generated:
+
+         python scripts/build-homelab.py
+
+     The service list and the chain live at the top of that script. It
+     measures every label, wraps the rows and grows the canvas to fit, which
+     the hand-placed first version did not - two labels overflowed their boxes
+     immediately. It validates its own XML before writing.
+
+     Contents are Damiaan's actual stack as of 2026-09-15. If something
+     changes, edit the data in the script and re-run it. -->
 <h2 align="center">🏠 The homelab</h2>
 
 <div align="center">
