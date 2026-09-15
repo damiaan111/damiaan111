@@ -54,6 +54,21 @@ jobs:
             exit 1
           fi
 
+      # The action writes TEN variants and the README uses exactly one. The
+      # other nine were being committed and kept forever - about 1.6 MB of
+      # files nothing references, re-pushed on every daily run. Keep the one.
+      #
+      # This runs AFTER the verify step above, so a missing expected file
+      # still fails loudly rather than being quietly deleted here.
+      - name: Drop the variants the README does not use
+        run: |
+          keep=profile-night-rainbow.svg
+          cd profile-3d-contrib
+          before=$(ls -1 | wc -l)
+          find . -maxdepth 1 -type f -name '*.svg' ! -name "$keep" -delete
+          echo "kept $keep; removed $((before - $(ls -1 | wc -l))) unused variant(s)"
+          ls -la
+
       - name: Commit generated SVGs
         run: |
           git config user.name  "github-actions[bot]"
