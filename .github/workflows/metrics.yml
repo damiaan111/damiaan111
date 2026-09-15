@@ -53,6 +53,29 @@ jobs:
 
           plugin_lines: yes
 
+          # Recolour the terminal template onto the profile palette.
+          #
+          # The template ships a maroon body (#42092b) and a brown-grey
+          # titlebar, which is the one panel on the page that looks like it
+          # came from somewhere else. `extras_css` is the action's documented
+          # hook for this - these selectors are the template's own, read out of
+          # a published metrics.terminal.svg, not guessed.
+          #
+          # Verified by sampling the rendered pixels: titlebar #121E24,
+          # body #0B0F14. Do not "check" this from a static screenshot of the
+          # whole panel - the terminal types itself in over ~4 seconds and a
+          # headless capture shows it mostly empty (see CLAUDE.md).
+          extras_css: |
+            svg{color:#c9d1d9}
+            .header{background:linear-gradient(#16232a 0,#101a20 100%)}
+            .title{color:#8aa7b0}
+            .button{background:linear-gradient(#2a3b44 0,#1d2c33 100%);color:#7f9aa2;text-shadow:none}
+            .button.exit{background:linear-gradient(#ff6f61 0,#e5484d 100%);color:#0b0f14}
+            pre{color:#c9d1d9;background:#0b0f14}
+            .banner,footer{color:#6f8b94}
+            .ps1-path{color:#00e5a0}
+            .ps1-location{color:#3ad6ff}
+
   # ── 2. Isometric commit calendar, on its own so it can be a half-width card
   isocalendar:
     runs-on: ubuntu-latest

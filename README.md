@@ -162,7 +162,7 @@ the domain when it ships.
 <h2 align="center">🏠 The homelab</h2>
 
 <div align="center">
-  <img src="./assets/homelab.svg" alt="Homelab topology: WAN, pfSense, VLANs, Proxmox VE, Docker, and the services running on it" width="100%">
+  <img src="./assets/homelab.svg" alt="Homelab topology: WAN, Omada router, VLANs, Proxmox VE, LXC and Docker, and the containers and VMs running on it" width="100%">
 </div>
 
 ---
@@ -174,7 +174,7 @@ the domain when it ships.
 <h2 align="center">🖥 ssh damiaan@github</h2>
 
 <div align="center">
-  <img src="./metrics/metrics.terminal.svg" alt="Terminal-style GitHub metrics" width="100%">
+  <img src="./metrics/metrics.terminal.svg" alt="Terminal-style GitHub metrics" width="480">
 </div>
 
 ---
