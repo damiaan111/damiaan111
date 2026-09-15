@@ -40,8 +40,11 @@ jobs:
           config_timezone: Europe/Amsterdam
           config_output: svg
 
-          plugin_isocalendar: yes
-          plugin_isocalendar_duration: full-year
+          # No isocalendar here. In run #2 it made this panel 480x823 - which
+          # the README then upscaled to full width, so it towered over
+          # everything and the prompt lines fell out of frame. It is also
+          # already shown full-width in its own README section, so it was
+          # duplicated. Terminal is now metadata + languages + lines.
 
           plugin_languages: yes
           plugin_languages_indepth: yes
@@ -90,29 +93,6 @@ jobs:
           plugin_languages_limit: 10
           plugin_languages_details: bytes-size, percentage
           plugin_languages_analysis_timeout: 15
-
-  # ── 3b. Coding habits ───────────────────────────────────────────────
-  #
-  # `continue-on-error` because this is the one panel that infers something
-  # from PRIVATE repository activity (commit hours, indentation, file types).
-  # If you decide you do not want that published, delete this whole job —
-  # the profile keeps working and section 7 of the README falls back to the
-  # placeholder. See docs/10-golive.md Step 8.
-  habits:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - uses: lowlighter/metrics@latest
-        with:
-          token: ${{ secrets.METRICS_TOKEN }}
-          committer_token: ${{ secrets.GITHUB_TOKEN }}
-          filename: metrics/metrics.habits.svg
-          base: ""
-          config_timezone: Europe/Amsterdam
-          plugin_habits: yes
-          plugin_habits_from: 200
-          plugin_habits_charts: yes
-          plugin_habits_trim: yes
 
   # ── 4. PageSpeed for my own sites — measured, not claimed ───────────
   #     One job per URL: the plugin takes a single url.

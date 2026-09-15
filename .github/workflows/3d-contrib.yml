@@ -27,7 +27,32 @@ jobs:
           # contributions show up too. See docs/03-workflows.md.
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
-          SETTING_JSON: .github/profile-3d-contrib.json
+          # NO SETTING_JSON.
+          #
+          # Supplying one switches the action into "customize" mode: it writes
+          # a single profile-customize.svg, drops the 3D calendar entirely and
+          # renders only a language donut — and in run #2 it came out
+          # 1280x850, black, with unreadable labels, because the palette keys
+          # in that settings file are not the ones customize mode expects.
+          #
+          # Without it the action writes its standard named variants, which are
+          # properly styled and actually contain the calendar. The README uses
+          # profile-night-rainbow.svg.
+
+      - name: Show what the action actually wrote
+        run: ls -la profile-3d-contrib/
+
+      # Guard against the class of bug that bit run #2: the README referencing
+      # a filename the action never produces. Cheaper to fail here than to
+      # ship a broken image.
+      - name: Verify the file the README expects exists
+        run: |
+          expected=profile-3d-contrib/profile-night-rainbow.svg
+          if [ ! -s "$expected" ]; then
+            echo "::error::$expected was not generated. Available:"
+            ls -1 profile-3d-contrib/ || true
+            exit 1
+          fi
 
       - name: Commit generated SVGs
         run: |
