@@ -64,7 +64,16 @@ jobs:
           plugin_isocalendar: yes
           plugin_isocalendar_duration: full-year
 
-  # ── 3. Languages + coding habits ────────────────────────────────────
+  # ── 3. Languages ────────────────────────────────────────────────────
+  #
+  # Split from habits after run #2: a single job produced ONE file, so when
+  # it failed the profile lost both panels and there was no way to tell which
+  # plugin was at fault. Two jobs, two files, independent failures.
+  #
+  # `plugin_languages_sections: recently-used` was dropped. It clones your
+  # repositories inside the runner to analyse recent commits — slow, and the
+  # most likely cause of run #2's failure. `most-used` reads the GraphQL API
+  # and is what actually renders the bar chart.
   languages:
     runs-on: ubuntu-latest
     steps:
@@ -77,8 +86,29 @@ jobs:
           config_timezone: Europe/Amsterdam
           plugin_languages: yes
           plugin_languages_indepth: yes
-          plugin_languages_sections: most-used, recently-used
+          plugin_languages_sections: most-used
           plugin_languages_limit: 10
+          plugin_languages_details: bytes-size, percentage
+          plugin_languages_analysis_timeout: 15
+
+  # ── 3b. Coding habits ───────────────────────────────────────────────
+  #
+  # `continue-on-error` because this is the one panel that infers something
+  # from PRIVATE repository activity (commit hours, indentation, file types).
+  # If you decide you do not want that published, delete this whole job —
+  # the profile keeps working and section 7 of the README falls back to the
+  # placeholder. See docs/10-golive.md Step 8.
+  habits:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: lowlighter/metrics@latest
+        with:
+          token: ${{ secrets.METRICS_TOKEN }}
+          committer_token: ${{ secrets.GITHUB_TOKEN }}
+          filename: metrics/metrics.habits.svg
+          base: ""
+          config_timezone: Europe/Amsterdam
           plugin_habits: yes
           plugin_habits_from: 200
           plugin_habits_charts: yes
@@ -126,6 +156,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Run #2 photographed Cloudflare's "Verify you are human" page on
+          # both sites, not the sites. Your own bot protection challenges the
+          # Action's headless Chrome like any other datacentre client.
+          #
+          # Fix: a Cloudflare WAF *skip* rule keyed on a secret query string,
+          # then append it here. docs/08-runbook.md has the rule.
+          #   url: "https://tacshot.nl/?shot=${{ secrets.SHOT_KEY }}"
           - { slug: tacshot,  url: "https://tacshot.nl",           title: "tacshot.nl" }
           - { slug: vdbrinks, url: "https://website.vdbrinks.nl",  title: "website.vdbrinks.nl" }
     steps:
@@ -140,5 +177,8 @@ jobs:
           plugin_screenshot_url: ${{ matrix.url }}
           plugin_screenshot_selector: body
           plugin_screenshot_viewport: '{ "width": 1280, "height": 720 }'
-          plugin_screenshot_wait: 2500
+          # Raised from 2500 after run #2 captured a Cloudflare interstitial.
+          # The wait was not the real problem (see below) but a challenged
+          # page needs longer than a served one either way.
+          plugin_screenshot_wait: 6000
           plugin_screenshot_background: yes
