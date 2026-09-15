@@ -1,0 +1,12 @@
+{
+  "type": "night-rainbow",
+  "growing": true,
+  "animate": true,
+  "l10n": "en",
+  "settings": {
+    "backgroundColor": "#0d1117",
+    "foregroundColor": "#e9f3f1",
+    "strongColor": "#00e5a0",
+    "weakColor": "#1f3a42"
+  }
+}

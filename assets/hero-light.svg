@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="260" viewBox="0 0 1000 260" role="img" aria-label="Damiaan van den Brink — browser games, hand-coded web, self-hosted infrastructure">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6f8fa"/>
+      <stop offset="55%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#eef4f2"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00a97a"/>
+      <stop offset="50%" stop-color="#3ad6ff"/>
+      <stop offset="100%" stop-color="#ff9f1c"/>
+    </linearGradient>
+    <linearGradient id="scan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00a97a" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#00a97a" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#00a97a" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="sweep" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#00a97a" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#00a97a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M28 0H0V28" fill="none" stroke="#dce5e3" stroke-width="1"/>
+    </pattern>
+    <clipPath id="panel"><rect x="0" y="0" width="1000" height="260" rx="18"/></clipPath>
+    <style>
+      .mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
+      .title{font-family:"Segoe UI",Inter,Helvetica,Arial,sans-serif;font-weight:800;letter-spacing:1.5px}
+      .cursor{animation:blink 1.06s steps(1) infinite}
+      @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+      .scanline{animation:slide 5.2s linear infinite}
+      @keyframes slide{0%{transform:translateX(-340px)}100%{transform:translateX(1000px)}}
+      .radar{animation:spin 3.4s linear infinite;transform-origin:880px 130px}
+      @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+      .b1,.b2,.b3,.b4{animation:pulse 1.9s ease-in-out infinite}
+      .b2{animation-delay:.24s}.b3{animation-delay:.48s}.b4{animation-delay:.72s}
+      @keyframes pulse{0%,100%{transform:scaleY(.35);opacity:.45}50%{transform:scaleY(1);opacity:1}}
+      .rev{animation:reveal 1.1s ease-out both}
+      .rev2{animation:reveal 1.1s .25s ease-out both}
+      .rev3{animation:reveal 1.1s .5s ease-out both}
+      @keyframes reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    </style>
+  </defs>
+
+  <g clip-path="url(#panel)">
+    <rect width="1000" height="260" fill="url(#bg)"/>
+    <rect width="1000" height="260" fill="url(#grid)" opacity="0.6"/>
+
+    <!-- radar sweep -->
+    <g opacity="0.85">
+      <circle cx="880" cy="130" r="86" fill="none" stroke="#cfe6dd" stroke-width="1"/>
+      <circle cx="880" cy="130" r="58" fill="none" stroke="#cfe6dd" stroke-width="1"/>
+      <circle cx="880" cy="130" r="30" fill="none" stroke="#cfe6dd" stroke-width="1"/>
+      <circle cx="880" cy="130" r="86" fill="url(#sweep)" opacity="0.35"/>
+      <g class="radar">
+        <path d="M880 130 L880 44 A86 86 0 0 1 941 69 Z" fill="url(#sweep)"/>
+        <line x1="880" y1="130" x2="880" y2="44" stroke="#00a97a" stroke-width="1.5" opacity="0.9"/>
+      </g>
+      <circle cx="916" cy="98" r="2.6" fill="#ff9f1c"/>
+      <circle cx="846" cy="162" r="2.2" fill="#3ad6ff"/>
+      <circle cx="898" cy="170" r="2" fill="#00a97a"/>
+    </g>
+
+    <!-- scanline -->
+    <rect class="scanline" x="0" y="0" width="340" height="260" fill="url(#scan)" opacity="0.12"/>
+
+    <!-- terminal chrome -->
+    <g>
+      <circle cx="40" cy="36" r="5" fill="#ff5f56"/>
+      <circle cx="58" cy="36" r="5" fill="#ffbd2e"/>
+      <circle cx="76" cy="36" r="5" fill="#27c93f"/>
+      <text class="mono" x="96" y="41" font-size="13" fill="#7a8f96">damiaan@vdbrinks:~$ whoami</text>
+    </g>
+
+    <!-- name -->
+    <text class="title" x="38" y="122" font-size="46" fill="#0d1117">DAMIAAN VAN DEN BRINK</text>
+    <rect x="40" y="136" width="300" height="3" rx="1.5" fill="url(#accent)"/>
+
+    <!-- subtitle -->
+    <text class="mono" x="40" y="176" font-size="15.5" fill="#3d5a62">
+      browser games<tspan fill="#b6c6c4"> · </tspan>hand-coded web<tspan fill="#33505c"> · </tspan>self-hosted infrastructure
+    </text>
+
+    <!-- prompt line -->
+    <g>
+      <text class="mono" x="40" y="214" font-size="13.5" fill="#00a97a">
+        <tspan fill="#7a8f96">$</tspan> ./deploy --no-trackers --no-subscriptions --own-your-stack
+      </text>
+      <rect class="cursor" x="534" y="203" width="8" height="14" fill="#00a97a"/>
+    </g>
+
+    <!-- equaliser bars -->
+    <g transform="translate(700,200)">
+      <rect class="b1" x="0"  y="-30" width="5" height="30" rx="2" fill="#00a97a"/>
+      <rect class="b2" x="10" y="-30" width="5" height="30" rx="2" fill="#3ad6ff"/>
+      <rect class="b3" x="20" y="-30" width="5" height="30" rx="2" fill="#ff9f1c"/>
+      <rect class="b4" x="30" y="-30" width="5" height="30" rx="2" fill="#00a97a"/>
+    </g>
+
+    <rect x="0.5" y="0.5" width="999" height="259" rx="18" fill="none" stroke="#d0dad8" stroke-width="1"/>
+    <rect x="0" y="0" width="1000" height="3" fill="url(#accent)"/>
+  </g>
+</svg>

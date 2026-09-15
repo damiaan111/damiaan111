@@ -1,0 +1,38 @@
+# ─────────────────────────────────────────────────────────────────────
+# yoshi389111/github-profile-3d-contrib — isometric 3D contribution city.
+# Commits SVGs into profile-3d-contrib/ on main.
+# ─────────────────────────────────────────────────────────────────────
+name: 3d-contrib
+
+on:
+  schedule:
+    - cron: "47 4 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/workflows/3d-contrib.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: yoshi389111/github-profile-3d-contrib@latest
+        env:
+          # A PAT here (instead of GITHUB_TOKEN) makes private
+          # contributions show up too. See docs/03-workflows.md.
+          GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+          SETTING_JSON: .github/profile-3d-contrib.json
+
+      - name: Commit generated SVGs
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A profile-3d-contrib
+          git diff --staged --quiet || git commit -m "chore(3d): refresh contribution calendar"
+          git push
