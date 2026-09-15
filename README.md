@@ -270,12 +270,20 @@ the domain when it ships.
 
 <img src="https://skillicons.dev/icons?i=linux,debian,docker,nginx,postgres,redis,grafana,prometheus,bash,cloudflare&theme=dark" alt="Infra stack">
 
-<!-- skillicons has no icon for these three; simple-icons (via shields) does -->
+<!-- skillicons has no icons for these; simple-icons (via shields) does.
+     These must match the homelab panel directly above - this row says "mine",
+     so it lists what actually runs on his Proxmox host, not what he deploys
+     for clients. Nextcloud was here until 2026-09-15 and was wrong: that is a
+     vdBrinks ICT service (see the project card), not something in his own lab.
+     He runs Immich for photos. Regenerate the panel and update this row
+     together, or they drift apart again. -->
 <img alt="Proxmox" src="https://img.shields.io/badge/Proxmox_VE-E57000?style=flat-square&logo=proxmox&logoColor=white&labelColor=0D1117">
 <img alt="Portainer" src="https://img.shields.io/badge/Portainer-13BEF9?style=flat-square&logo=portainer&logoColor=white&labelColor=0D1117">
 <img alt="AdGuard" src="https://img.shields.io/badge/AdGuard_Home-68BC71?style=flat-square&logo=adguard&logoColor=white&labelColor=0D1117">
-<img alt="Nextcloud" src="https://img.shields.io/badge/Nextcloud-0082C9?style=flat-square&logo=nextcloud&logoColor=white&labelColor=0D1117">
+<img alt="Immich" src="https://img.shields.io/badge/Immich-4250AF?style=flat-square&logo=immich&logoColor=white&labelColor=0D1117">
 <img alt="Plex" src="https://img.shields.io/badge/Plex-E5A00D?style=flat-square&logo=plex&logoColor=white&labelColor=0D1117">
+<img alt="Home Assistant" src="https://img.shields.io/badge/Home_Assistant-41BDF5?style=flat-square&logo=homeassistant&logoColor=white&labelColor=0D1117">
+<img alt="WireGuard" src="https://img.shields.io/badge/WireGuard-88171A?style=flat-square&logo=wireguard&logoColor=white&labelColor=0D1117">
 
 **Client IT — tenants, endpoints, automation**
 
