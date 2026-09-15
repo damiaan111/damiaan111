@@ -140,7 +140,14 @@ jobs:
           base: ""
           config_timezone: Europe/Amsterdam
           plugin_activity: yes
-          plugin_activity_limit: 6
+          plugin_activity_limit: 5
           plugin_activity_days: 0
-          plugin_activity_visibility: all
+          # public only, deliberately. With `all`, the plugin crashed:
+          #   TypeError: Cannot read properties of undefined (reading 'filter')
+          #   at source/plugins/activity/index.mjs:140
+          # That line is the PushEvent branch doing `payload.commits.filter(...)`.
+          # GitHub strips the payload on private events, so `commits` is
+          # undefined and the plugin has no guard for it. Nothing to fix here;
+          # just do not ask it for private events.
+          plugin_activity_visibility: public
           plugin_activity_timestamps: yes
