@@ -110,49 +110,62 @@ jobs:
           set -euo pipefail
           src=/metrics_renders/metrics.terminal.svg
           dst=metrics/metrics.terminal.svg
-
           sudo test -s "$src"
-          sudo cp "$src" "$dst"
-          sudo chown "$(id -u):$(id -g)" "$dst"
 
-          # Guard: a reflow is only safe while the root has no viewBox. With
-          # one, raising the width would SCALE the contents - the exact bug
-          # this step exists to avoid - so stop rather than ship bigger type.
-          if head -c 400 "$dst" | grep -q 'viewBox'; then
-            echo "::error::root <svg> gained a viewBox; widening would scale, not reflow"
-            exit 1
-          fi
+          # Re-apply the whole change onto a fresh origin/main on every
+          # attempt, rather than committing once and rebasing on failure.
+          #
+          # The first version of this rebased, and it deadlocked: the three
+          # sibling jobs commit through the GitHub API within the same few
+          # seconds, the push lost the race, `git pull --rebase` hit a
+          # conflict, and every later attempt then died on "Pulling is not
+          # possible because you have unmerged files". Reset-and-reapply has
+          # no conflict to hit - the result only ever depends on the render,
+          # which is already sitting in /metrics_renders.
+          #
+          # The jobs are deliberately NOT chained with `needs:` - that would
+          # couple their failures, and the whole point of splitting them was
+          # independent failure (see the languages job comment).
+          apply() {
+            sudo cp "$src" "$dst"
+            sudo chown "$(id -u):$(id -g)" "$dst"
 
-          if ! grep -q 'width="480" height="430"' "$dst"; then
-            echo "::error::expected a 480x430 root; the template changed - re-measure"
-            head -c 200 "$dst"
-            exit 1
-          fi
+            # A reflow is only safe while the root has no viewBox. With one,
+            # raising the width SCALES the contents - the exact bug this step
+            # exists to prevent - so stop rather than ship bigger type.
+            if head -c 400 "$dst" | grep -q 'viewBox'; then
+              echo "::error::root <svg> gained a viewBox; widening would scale, not reflow"
+              return 1
+            fi
+            if ! grep -q 'width="480" height="430"' "$dst"; then
+              echo "::error::expected a 480x430 root; the template changed - re-measure"
+              head -c 200 "$dst"
+              return 1
+            fi
 
-          sed -i '0,/width="480" height="430"/s//width="880" height="430"/' "$dst"
-
-          grep -q 'width="880" height="430"' "$dst" || {
-            echo "::error::reflow did not apply"; exit 1; }
-
-          python3 -c "import xml.dom.minidom, sys; xml.dom.minidom.parse(sys.argv[1])" "$dst"
-          echo "reflowed to 880x430"
+            sed -i '0,/width="480" height="430"/s//width="880" height="430"/' "$dst"
+            grep -q 'width="880" height="430"' "$dst"
+            python3 -c "import xml.dom.minidom, sys; xml.dom.minidom.parse(sys.argv[1])" "$dst"
+          }
 
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "$dst"
-          if git diff --staged --quiet; then
-            echo "no change"
-            exit 0
-          fi
-          git commit -m "Update metrics/metrics.terminal.svg - [Skip GitHub Action]"
 
-          # The sibling jobs commit through the GitHub API at the same moment,
-          # so a plain push races them and loses.
           for i in 1 2 3 4 5; do
-            if git pull --rebase --autostash origin main && git push; then
+            git fetch --quiet origin main
+            git reset --quiet --hard origin/main
+            apply
+            git add "$dst"
+            if git diff --staged --quiet; then
+              echo "no change"
               exit 0
             fi
-            echo "push attempt $i lost the race, retrying"
+            git commit --quiet -m "Update metrics/metrics.terminal.svg - [Skip GitHub Action]"
+            if git push --quiet; then
+              echo "reflowed to 880x430 and pushed"
+              exit 0
+            fi
+            echo "push attempt $i lost the race against a sibling job, retrying"
             sleep $((i * 5))
           done
           echo "::error::could not push after 5 attempts"
