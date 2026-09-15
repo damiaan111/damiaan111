@@ -174,7 +174,7 @@ the domain when it ships.
 <h2 align="center">🖥 ssh damiaan@github</h2>
 
 <div align="center">
-  <img src="./metrics/metrics.terminal.svg" alt="Terminal-style GitHub metrics" width="480">
+  <img src="./metrics/metrics.terminal.svg" alt="Terminal-style GitHub metrics" width="100%">
 </div>
 
 ---

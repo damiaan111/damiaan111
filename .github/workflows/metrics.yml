@@ -26,32 +26,25 @@ concurrency:
 
 jobs:
 
-  # ── 1. The terminal panel (the one you picked) ──────────────────────
+  # ── 1. The terminal panel (the one you picked) ──────────────────
+  #
+  # This job does NOT let the action commit. It renders with
+  # `output_action: none`, widens the SVG, then commits itself. See the
+  # "Reflow" step for why that is necessary.
   terminal:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
-          committer_token: ${{ secrets.GITHUB_TOKEN }}
-          filename: metrics/metrics.terminal.svg
+          filename: metrics.terminal.svg
+          output_action: none          # writes to /metrics_renders/ instead
           template: terminal
           base: header, metadata
           config_timezone: Europe/Amsterdam
           config_output: svg
-
-          # 960px instead of the default 480. The panel is full-width on the
-          # README, and at 480 native it either upscaled to ~1.65x (text twice
-          # the size of everything else) or sat native in a narrow column with
-          # empty space either side. At 960 it renders at ~0.82x in a ~790px
-          # column, the same scale as every other panel, and the extra width
-          # goes into the line length rather than the type size.
-          #
-          # The docs warn `large` "may not be supported by all templates".
-          # It IS supported by terminal - verified on a real run, see
-          # docs/09-changelog.md. Re-check the output dimensions if you ever
-          # change the template.
-          config_display: large
 
           # No isocalendar here. In run #2 it made this panel 480x823 - which
           # the README then upscaled to full width, so it towered over
@@ -88,6 +81,82 @@ jobs:
             .banner,footer{color:#6f8b94}
             .ps1-path{color:#00e5a0}
             .ps1-location{color:#3ad6ff}
+
+      # ── Reflow the panel to 880px wide ────────────────────────────────
+      #
+      # The template renders 480x430 and ignores `config_display: large`
+      # (tried on a real run 2026-09-15: output was still 480x430; the docs
+      # do warn it "may not be supported by all templates").
+      #
+      # 480 is too narrow for a full-width README section. Displayed at
+      # `width="100%"` it upscaled ~1.65x and the type was twice the size of
+      # every other panel; displayed at its native 480 it is a narrow column
+      # with dead space either side.
+      #
+      # This is a REFLOW, not a resize. The root <svg> has NO viewBox and its
+      # <foreignObject> is width="100%", so raising the root width makes the
+      # HTML inside lay out wider - same font size, longer lines. Scaling it
+      # in the README instead would make the text bigger, which is the bug
+      # this fixes.
+      #
+      # HEIGHT IS DELIBERATELY UNCHANGED at 430. At 880 the content's natural
+      # bottom is ~379px, so 430 looks slightly loose - but plugin_languages
+      # is capped at 8 and currently renders 5. Three more language rows is
+      # ~48px, which would reach ~427. Trimming the height to fit today's
+      # content would clip it the first time he starts a project in a new
+      # language.
+      - name: Reflow to 880px wide (not scaled - see comment)
+        run: |
+          set -euo pipefail
+          src=/metrics_renders/metrics.terminal.svg
+          dst=metrics/metrics.terminal.svg
+
+          sudo test -s "$src"
+          sudo cp "$src" "$dst"
+          sudo chown "$(id -u):$(id -g)" "$dst"
+
+          # Guard: a reflow is only safe while the root has no viewBox. With
+          # one, raising the width would SCALE the contents - the exact bug
+          # this step exists to avoid - so stop rather than ship bigger type.
+          if head -c 400 "$dst" | grep -q 'viewBox'; then
+            echo "::error::root <svg> gained a viewBox; widening would scale, not reflow"
+            exit 1
+          fi
+
+          if ! grep -q 'width="480" height="430"' "$dst"; then
+            echo "::error::expected a 480x430 root; the template changed - re-measure"
+            head -c 200 "$dst"
+            exit 1
+          fi
+
+          sed -i '0,/width="480" height="430"/s//width="880" height="430"/' "$dst"
+
+          grep -q 'width="880" height="430"' "$dst" || {
+            echo "::error::reflow did not apply"; exit 1; }
+
+          python3 -c "import xml.dom.minidom, sys; xml.dom.minidom.parse(sys.argv[1])" "$dst"
+          echo "reflowed to 880x430"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$dst"
+          if git diff --staged --quiet; then
+            echo "no change"
+            exit 0
+          fi
+          git commit -m "Update metrics/metrics.terminal.svg - [Skip GitHub Action]"
+
+          # The sibling jobs commit through the GitHub API at the same moment,
+          # so a plain push races them and loses.
+          for i in 1 2 3 4 5; do
+            if git pull --rebase --autostash origin main && git push; then
+              exit 0
+            fi
+            echo "push attempt $i lost the race, retrying"
+            sleep $((i * 5))
+          done
+          echo "::error::could not push after 5 attempts"
+          exit 1
 
   # ── 2. Isometric commit calendar, on its own so it can be a half-width card
   isocalendar:
