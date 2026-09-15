@@ -116,23 +116,31 @@ jobs:
           config_timezone: Europe/Amsterdam
           config_output: svg
 
-  # ── 5. Achievements ─────────────────────────────────────────────────
+  # ── 5. Recent activity ────────────────────────────────────
   #
-  # Replaces github-profile-trophy.vercel.app, which returned
-  # 402 DEPLOYMENT_DISABLED ("Payment required") - that deployment is gone.
-  # Achievements are the same idea (ranked badges for stars, followers,
-  # commits, issues, reviews) generated from your own token instead.
-  achievements:
+  # This slot replaces github-profile-trophy.vercel.app (402 Payment required).
+  #
+  # It was `plugin_achievements` first, and that DID NOT WORK - it rendered
+  # "Unexpected error" into the SVG on a green job, which is the exact trap
+  # CLAUDE.md warns about. The cause is upstream and not fixable from here:
+  # the plugin's GraphQL query asks for Projects (classic), GitHub has sunset
+  # that, so the API rejects the whole query. Do not put it back expecting a
+  # parameter to fix it. Checked 2026-09-15 against metrics@latest.
+  #
+  # Activity is a better fit anyway: it shows work happening now, rather than
+  # ranking two public repositories against thresholds they cannot meet.
+  activity:
     runs-on: ubuntu-latest
     steps:
       - uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
           committer_token: ${{ secrets.GITHUB_TOKEN }}
-          filename: metrics/metrics.achievements.svg
+          filename: metrics/metrics.activity.svg
           base: ""
           config_timezone: Europe/Amsterdam
-          plugin_achievements: yes
-          plugin_achievements_display: compact
-          plugin_achievements_threshold: C
-          plugin_achievements_secrets: yes
+          plugin_activity: yes
+          plugin_activity_limit: 6
+          plugin_activity_days: 0
+          plugin_activity_visibility: all
+          plugin_activity_timestamps: yes
