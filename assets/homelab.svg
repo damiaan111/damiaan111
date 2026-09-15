@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="330" viewBox="0 0 880 330" role="img"
+     aria-label="Homelab topology: WAN to pfSense to VLANs to Proxmox VE to Docker, running AdGuard Home, Nextcloud, Plex, Portainer, Grafana, Prometheus, PostgreSQL, Redis and nginx">
+  <title>The homelab — Utrecht, NL</title>
+  <defs>
+    <linearGradient id="hl-a" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00e5a0"/><stop offset="50%" stop-color="#3ad6ff"/><stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="hl-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b0f14"/><stop offset="100%" stop-color="#101a20"/>
+    </linearGradient>
+    <clipPath id="hl-c"><rect width="880" height="330" rx="14"/></clipPath>
+    <style>
+      .m{font-family:"SFMono-Regular",Consolas,Menlo,monospace}
+      .lbl{font-size:11.5px;font-weight:600;fill:#dbe9e6}
+      .sub{font-size:9.5px;fill:#6f8b94}
+      .chip{font-size:10.5px;fill:#b9d2cd}
+      /* No entrance animations: every element is fully opaque at frame 0, so a
+         static capture of this file looks the same as a live one. Only the
+         packet dot and the status pip move. */
+      .pkt{animation:hl-run 3.6s linear infinite}
+      @keyframes hl-run{0%{transform:translateX(0)}100%{transform:translateX(632px)}}
+      .pip{animation:hl-bl 1.6s steps(1) infinite}
+      @keyframes hl-bl{0%,55%{opacity:1}56%,100%{opacity:.2}}
+    </style>
+  </defs>
+
+  <g clip-path="url(#hl-c)">
+    <rect width="880" height="330" fill="url(#hl-bg)"/>
+    <rect x="0" y="0" width="880" height="3" fill="url(#hl-a)"/>
+
+    <!-- title bar -->
+    <circle cx="26" cy="30" r="5" fill="#ff5f56"/>
+    <circle cx="44" cy="30" r="5" fill="#ffbd2e"/>
+    <circle cx="62" cy="30" r="5" fill="#27c93f"/>
+    <text class="m" x="84" y="34" font-size="12.5" fill="#7f9aa2">damiaan@homelab:~$ <tspan fill="#00e5a0">topology --live</tspan></text>
+    <g>
+      <circle class="pip" cx="790" cy="30" r="4" fill="#00e5a0"/>
+      <text class="m sub" x="802" y="34">all up</text>
+    </g>
+    <line x1="0" y1="52" x2="880" y2="52" stroke="#1b2a31"/>
+
+    <!-- the chain: WAN -> pfSense -> VLANs -> Proxmox -> Docker -->
+    <line x1="150" y1="104" x2="742" y2="104" stroke="#24424a" stroke-width="2"/>
+    <circle class="pkt" cx="150" cy="104" r="3.5" fill="#3ad6ff"/>
+
+    <g>
+      <rect x="28" y="76" width="122" height="56" rx="9" fill="#0d151b" stroke="#24424a"/>
+      <text class="m lbl" x="89" y="100" text-anchor="middle">WAN</text>
+      <text class="m sub" x="89" y="116" text-anchor="middle">the connection in</text>
+    </g>
+    <g>
+      <rect x="176" y="76" width="140" height="56" rx="9" fill="#0d151b" stroke="#2c5a52"/>
+      <text class="m lbl" x="246" y="100" text-anchor="middle">pfSense</text>
+      <text class="m sub" x="246" y="116" text-anchor="middle">firewall · routing</text>
+    </g>
+    <g>
+      <rect x="342" y="76" width="140" height="56" rx="9" fill="#0d151b" stroke="#24424a"/>
+      <text class="m lbl" x="412" y="100" text-anchor="middle">VLANs</text>
+      <text class="m sub" x="412" y="116" text-anchor="middle">segmented network</text>
+    </g>
+    <g>
+      <rect x="508" y="76" width="140" height="56" rx="9" fill="#0d151b" stroke="#5a4a2c"/>
+      <text class="m lbl" x="578" y="100" text-anchor="middle">Proxmox VE</text>
+      <text class="m sub" x="578" y="116" text-anchor="middle">bare metal, mine</text>
+    </g>
+    <g>
+      <rect x="674" y="76" width="140" height="56" rx="9" fill="#0d151b" stroke="#2c4a5a"/>
+      <text class="m lbl" x="744" y="100" text-anchor="middle">Docker</text>
+      <text class="m sub" x="744" y="116" text-anchor="middle">compose · Portainer</text>
+    </g>
+
+    <!-- what actually runs on it -->
+    <text class="m sub" x="28" y="176" fill="#4f6d78">RUNNING</text>
+    <line x1="92" y1="172" x2="852" y2="172" stroke="#1b2a31"/>
+
+    <g>
+      <rect x="28" y="190" width="126" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="46" cy="207" r="4" fill="#68bc71"/><text class="m chip" x="58" y="211">AdGuard Home</text>
+      <rect x="166" y="190" width="118" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="184" cy="207" r="4" fill="#0082c9"/><text class="m chip" x="196" y="211">Nextcloud</text>
+      <rect x="296" y="190" width="78" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="314" cy="207" r="4" fill="#e5a00d"/><text class="m chip" x="326" y="211">Plex</text>
+      <rect x="386" y="190" width="104" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="404" cy="207" r="4" fill="#13bef9"/><text class="m chip" x="416" y="211">Portainer</text>
+      <rect x="502" y="190" width="98" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="520" cy="207" r="4" fill="#f46800"/><text class="m chip" x="532" y="211">Grafana</text>
+      <rect x="612" y="190" width="116" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="630" cy="207" r="4" fill="#e6522c"/><text class="m chip" x="642" y="211">Prometheus</text>
+      <rect x="740" y="190" width="112" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="758" cy="207" r="4" fill="#336791"/><text class="m chip" x="770" y="211">PostgreSQL</text>
+
+      <rect x="28" y="234" width="82" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="46" cy="251" r="4" fill="#dc382d"/><text class="m chip" x="58" y="255">Redis</text>
+      <rect x="122" y="234" width="82" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="140" cy="251" r="4" fill="#009639"/><text class="m chip" x="152" y="255">nginx</text>
+      <rect x="216" y="234" width="126" height="34" rx="8" fill="#101c22" stroke="#24424a"/>
+      <circle cx="234" cy="251" r="4" fill="#f38020"/><text class="m chip" x="246" y="255">Cloudflare edge</text>
+    </g>
+
+    <!-- the point of the whole thing -->
+    <line x1="0" y1="290" x2="880" y2="290" stroke="#1b2a31"/>
+    <text class="m" x="28" y="312" font-size="11" fill="#7f9aa2">No cloud subscription. No trackers. Hardware I own, in Utrecht.</text>
+    <text class="m" x="852" y="312" font-size="11" fill="#00e5a0" text-anchor="end">vdbrinks.nl</text>
+
+    <rect x=".5" y=".5" width="879" height="329" rx="14" fill="none" stroke="#24424a"/>
+  </g>
+</svg>
