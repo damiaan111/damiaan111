@@ -7,7 +7,7 @@ name: snake
 
 on:
   schedule:
-    - cron: "37 4 * * *"
+    - cron: "37 4 * * 0"   # Sunday only: the snake barely changes day to day
   workflow_dispatch:
   push:
     branches: [main]
@@ -19,6 +19,7 @@ permissions:
 jobs:
   snake:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: Platane/snk@v3
         id: snake

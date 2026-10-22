@@ -6,12 +6,17 @@
 # Secrets required:  METRICS_TOKEN  (classic PAT, scopes: read:user,
 #                    repo  — `repo` is what lets it count private work)
 # Docs:              ../../../docs/03-workflows.md
+#
+# When that token expires every job here fails with "Bad credentials", and
+# the action retries by default: in October 2026 that was sixteen minutes of
+# log per morning, four jobs at a time. Hence `retries: 1` on every step and
+# a ten-minute ceiling on every job. Give the token no expiry, or diarise it.
 # ─────────────────────────────────────────────────────────────────────
 name: metrics
 
 on:
   schedule:
-    - cron: "17 4 * * *"      # 06:17 Europe/Amsterdam (summer) — off-peak
+    - cron: "17 4 * * 0"   # Sunday 06:17 Europe/Amsterdam (summer), off-peak
   workflow_dispatch:
   push:
     branches: [main]
@@ -33,12 +38,15 @@ jobs:
   # "Reflow" step for why that is necessary.
   terminal:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
       - uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
+          retries: 1
+          retries_delay: 10
           filename: metrics.terminal.svg
           output_action: none          # writes to /metrics_renders/ instead
           template: terminal
@@ -174,10 +182,13 @@ jobs:
   # ── 2. Isometric commit calendar, on its own so it can be a half-width card
   isocalendar:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
+          retries: 1
+          retries_delay: 10
           committer_token: ${{ secrets.GITHUB_TOKEN }}
           filename: metrics/metrics.isocalendar.svg
           base: ""
@@ -197,10 +208,13 @@ jobs:
   # and is what actually renders the bar chart.
   languages:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
+          retries: 1
+          retries_delay: 10
           committer_token: ${{ secrets.GITHUB_TOKEN }}
           filename: metrics/metrics.languages.svg
           base: ""
@@ -224,10 +238,13 @@ jobs:
   # cannot break because somebody else's free hosting lapsed.
   stats:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
+          retries: 1
+          retries_delay: 10
           committer_token: ${{ secrets.GITHUB_TOKEN }}
           filename: metrics/metrics.stats.svg
           base: header, activity, community, repositories
