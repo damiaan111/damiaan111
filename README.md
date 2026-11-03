@@ -99,33 +99,6 @@ your own browser.
 <tr>
 <td width="50%" valign="top">
 
-### 🛠 vdBrinks ICT
-<img src="./assets/shots/vdbrinks-ict.svg" alt="vdBrinks ICT" width="100%">
-
-Home networks and personal servers, from Utrecht. Wi-Fi and mesh
-that actually covers the house, VLANs and firewalling, AdGuard DNS
-filtering, Nextcloud and Plex on hardware you own, Docker and
-Portainer with monitoring that tells you before the user does.
-
-**Nextcloud · Plex · Docker · Portainer · AdGuard Home**
-
-<a href="https://vdbrinks.nl"><img src="https://img.shields.io/badge/free_network_test-8B5CF6?style=for-the-badge&labelColor=0D1117"></a>
-
-</td>
-<td width="50%" valign="top">
-
-### 🌐 vdBrinks Web
-<img src="./assets/shots/vdbrinks-web.svg" alt="vdBrinks Web" width="100%">
-
-Websites, webshops and web apps written by hand. No page builder,
-no plugin stack, no database waiting to be exploited — static, edge
-cached, milliseconds to first paint. The client owns the code and
-the domain when it ships.
-
-**Static · edge-cached · hand-written HTML/CSS/JS**
-
-<a href="https://website.vdbrinks.nl"><img src="https://img.shields.io/badge/see_the_work-0FA981?style=for-the-badge&labelColor=0D1117"></a>
-
 </td>
 </tr>
 </table>
