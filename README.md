@@ -31,13 +31,6 @@
 <a href="https://serverdimitri.nl">
   <img alt="ServerDimitri games" src="https://img.shields.io/badge/%F0%9F%8E%AE_ARCADE-ServerDimitri-E5343E?style=for-the-badge&labelColor=0D1117">
 </a>
-<br>
-<a href="https://vdbrinks.nl">
-  <img alt="vdBrinks ICT" src="https://img.shields.io/badge/%F0%9F%9B%A0_ICT-vdbrinks.nl-8B5CF6?style=for-the-badge&labelColor=0D1117">
-</a>
-<a href="https://website.vdbrinks.nl">
-  <img alt="vdBrinks Web" src="https://img.shields.io/badge/%F0%9F%8C%90_WEB-website.vdbrinks.nl-0FA981?style=for-the-badge&labelColor=0D1117">
-</a>
 <!-- Contact address. This is a PERSONAL profile: no employer address, no
      employer domain, nowhere on this page. Do not "helpfully" swap this
      for a work mailbox. -->
